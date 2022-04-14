@@ -1,14 +1,13 @@
 package com.example.productosbc.services;
 
 import com.example.productosbc.entity.Producto;
-
-import java.util.List;
-import java.util.Optional;
+import com.example.productosbc.exceptions.ProductoException;
+import com.example.productosbc.exceptions.ValidationException;
 
 public interface ProductoService {
     public Iterable<Producto> findAll();
 
-    public Optional<Producto> findById(Long id) ;
+    public String findById(Long id) throws ValidationException, ProductoException;
 
     public Producto save(Producto producto);
 

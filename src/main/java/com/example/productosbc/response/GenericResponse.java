@@ -1,2 +1,8 @@
-package com.example.productosbc.response;public class GenericResponse {
+package com.example.productosbc.response;
+
+import lombok.Data;
+
+@Data
+public class GenericResponse {
+
 }

@@ -1,6 +1,7 @@
 package com.example.productosbc.services;
 
 import com.example.productosbc.entity.Producto;
+import com.example.productosbc.exceptions.ProductoException;
 import com.example.productosbc.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,19 @@ public class ProductoServiceImp implements ProductoService{
     }
 
     @Override
-    public Optional<Producto> findById(Long id) {
-        return prod.findById(id);
+    public String findById(Long id) throws ProductoException {
+
+        //try {
+            Optional<Producto> productoOptional = prod.findById(id);
+            //return prod.findById(id);
+            if (!productoOptional.isPresent()) {
+                throw new ProductoException("PRODUCTO_NO_EXISTE");
+            } else {
+                return productoOptional.toString();
+            }
+        //} catch ( ProductoException e) {
+          //  throw new ProductoException(e.getMessage());
+        //}
     }
 
     @Override
