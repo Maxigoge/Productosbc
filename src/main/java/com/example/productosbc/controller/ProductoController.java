@@ -29,7 +29,7 @@ public class ProductoController {
     private ModelMapper modelMapper = new ModelMapper();
 
     @PostMapping ("/nuevo")
-    public ResponseEntity<?> create (@Valid @RequestBody ProductoModels productoModel) {
+    public ResponseEntity<?> create (@Valid @RequestBody ProductoModels productoModel) throws Exception {
         Producto producto = modelMapper.map(productoModel, Producto.class);
         producto.setFechaCreacion(LocalDateTime.now().toString());
 
@@ -37,27 +37,29 @@ public class ProductoController {
     }
 
     @GetMapping("/todos")
-    public Iterable<Producto> getAll() {
+    public Iterable<Producto> getAll() throws Exception {
         return prodServ.findAll();
     }
 
-
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener formulario por id",
-            description = "Retorna un formulario por su id")
+    /*
+    //@Operation(summary = "Obtener formulario por id",
+      //      description = "Retorna un formulario por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204 - RESPUESTA_EXITOSA"),
             @ApiResponse(responseCode = "404 - PRODUCTO_NO_EXISTE", description = "El producto(id="+"/{id}"+") no existe"),
             @ApiResponse(responseCode = "500", description = "Se produjo un error desconocido")
-    })
-    public String reader(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
-    //public ResponseEntity<?> reader(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
+    })*/
+
+    //public String reader(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
+    public ResponseEntity<?> reader(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
         //return SuccessfulResponse(prodServ.findById(id_producto));
-        return prodServ.findById(id_producto);
+        if (prodServ.findById(id_producto) == null) {
+            throw new ProductoException("PRODUCTO_NO_EXISTE");
+        }
+        return ResponseEntity.ok(prodServ.findById(id_producto));
     }
 
-
-/*
     @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
 
@@ -68,7 +70,7 @@ public class ProductoController {
             prodServ.deleteById(id_producto);
             return ResponseEntity.ok().build();
         }
-    }*/
+    }
 
 
 }

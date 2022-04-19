@@ -16,29 +16,34 @@ public class ProductoServiceImp implements ProductoService{
     private ProductoRepository prod;
 
     @Override
-    public Iterable<Producto> findAll() {
-        return prod.findAll();
+    public Iterable<Producto> findAll() throws Exception{
+        try {
+            return prod.findAll();
+        } catch ( Exception e) {
+            throw new Exception(("ERROR_DESCONOCIDO"));
+        }
     }
 
     @Override
-    public String findById(Long id) throws ProductoException {
+    public Optional<Producto> findById(Long id) throws ProductoException {
 
-        //try {
-            Optional<Producto> productoOptional = prod.findById(id);
-            //return prod.findById(id);
-            if (!productoOptional.isPresent()) {
-                throw new ProductoException("PRODUCTO_NO_EXISTE");
+            if (!prod.findById(id).isPresent()) {
+                //throw new ProductoException("PRODUCTO_NO_EXISTE");
+                Optional<Producto> deva = null;
+                return deva;
             } else {
-                return productoOptional.toString();
+                return prod.findById(id);
             }
-        //} catch ( ProductoException e) {
-          //  throw new ProductoException(e.getMessage());
-        //}
+
     }
 
     @Override
-    public Producto save(Producto producto) {
-        return prod.save(producto);
+    public Producto save(Producto producto) throws Exception {
+        try {
+            return prod.save(producto);
+        } catch ( Exception e) {
+            throw new Exception("ERROR_DESCONOCIDO");
+        }
     }
 
     @Override
