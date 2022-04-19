@@ -10,4 +10,7 @@ public class ProductoNotFoundException extends RuntimeException {
         super(exception);
     }
 
+    public ProductoNotFoundException() {
+
+    }
 }
