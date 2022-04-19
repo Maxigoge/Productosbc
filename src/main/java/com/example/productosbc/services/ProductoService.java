@@ -13,5 +13,5 @@ public interface ProductoService {
 
     public Producto save(Producto producto) throws Exception;
 
-    public void deleteById(Long id) ;
+    public void deleteById(Long id) throws Exception;
 }

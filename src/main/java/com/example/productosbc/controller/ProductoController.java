@@ -4,11 +4,7 @@ import com.example.productosbc.entity.Producto;
 import com.example.productosbc.exceptions.ProductoException;
 import com.example.productosbc.exceptions.ValidationException;
 import com.example.productosbc.models.ProductoModels;
-import com.example.productosbc.response.SuccessfulResponse;
 import com.example.productosbc.services.ProductoService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,30 +38,19 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    /*
-    //@Operation(summary = "Obtener formulario por id",
-      //      description = "Retorna un formulario por su id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204 - RESPUESTA_EXITOSA"),
-            @ApiResponse(responseCode = "404 - PRODUCTO_NO_EXISTE", description = "El producto(id="+"/{id}"+") no existe"),
-            @ApiResponse(responseCode = "500", description = "Se produjo un error desconocido")
-    })*/
-
-    //public String reader(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
     public ResponseEntity<?> reader(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
-        //return SuccessfulResponse(prodServ.findById(id_producto));
-        if (prodServ.findById(id_producto) == null) {
-            throw new ProductoException("PRODUCTO_NO_EXISTE");
-        }
+    if (prodServ.findById(id_producto) == null) {
+        throw new ProductoException("PRODUCTO_NO_EXISTE");
+    }
         return ResponseEntity.ok(prodServ.findById(id_producto));
     }
 
     @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id_producto) throws ProductoException, ValidationException {
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id_producto) throws Exception {
 
-        //Optional<Producto> productoOptional = prodServ.findById(id_producto);
-        if (!prodServ.findById(id_producto).isPresent()) {
-            return ResponseEntity.notFound().build();
+        if (prodServ.findById(id_producto) == null) {
+            //return ResponseEntity.notFound().build();
+            throw new ProductoException("PRODUCTO_NO_EXISTE");
         } else {
             prodServ.deleteById(id_producto);
             return ResponseEntity.ok().build();

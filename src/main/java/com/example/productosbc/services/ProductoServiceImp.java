@@ -29,8 +29,8 @@ public class ProductoServiceImp implements ProductoService{
 
             if (!prod.findById(id).isPresent()) {
                 //throw new ProductoException("PRODUCTO_NO_EXISTE");
-                Optional<Producto> deva = null;
-                return deva;
+                Optional<Producto> prod = null;
+                return prod;
             } else {
                 return prod.findById(id);
             }
@@ -48,7 +48,11 @@ public class ProductoServiceImp implements ProductoService{
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        prod.deleteById(id);
+    public void deleteById(Long id) throws Exception {
+        try {
+            prod.deleteById(id);
+        } catch ( Exception e) {
+            throw new Exception("PRODUCTO_NO_EXISTE");
+        }
     }
 }
